@@ -14,6 +14,11 @@ const Home = async () => {
 
     //CHAMA MEU BANCO DE DADOS
     const barbershops = await db.barbershop.findMany({})
+    const popularBarbershops = await db.barbershop.findMany({
+        orderBy: {
+            name: "desc",
+        }
+    })
 
     return (
         <div>
@@ -33,6 +38,41 @@ const Home = async () => {
                         <SearchIcon />
                     </Button>
                 </div>
+                {/* BUSCA RAPIDA */}
+
+                <div className="flex gap-3 mt-6 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
+                    <Button className="gap-2" variant="secondary">
+                        <Image src="/cabelo.svg" width={16} height={16} alt="cabelo" />
+                        Cabelo
+                    </Button>
+
+                    <Button className="gap-2" variant="secondary">
+                        <Image src="/barba.svg" width={16} height={16} alt="Barba" />
+                        Barba
+                    </Button>
+
+                    <Button className="gap-2" variant="secondary">
+                        <Image src="/acabamento.svg" width={16} height={16} alt="Acabamento" />
+                        Acabamento
+                    </Button>
+
+                    <Button className="gap-2" variant="secondary">
+                        <Image src="/hidratacao.svg" width={16} height={16} alt="Hidratação" />
+                        Hidratação
+                    </Button>
+
+                    <Button className="gap-2" variant="secondary">
+                        <Image src="/massagem.svg" width={16} height={16} alt="Massagem" />
+                        Massagem
+                    </Button>
+
+                    <Button className="gap-2" variant="secondary">
+                        <Image src="/sobrancelha.svg" width={16} height={16} alt="Sobrancelha" />
+                        Sobrancelha
+                    </Button>
+
+                </div>
+
 
                 {/* IMAGEM */}
                 <div className="relative mt-6 h-[150px] w-full">
@@ -70,19 +110,41 @@ const Home = async () => {
                         </div>
                     </CardContent>
                 </Card>
-
-
+                {/* bloco de cards 1 */}
                 <h2 className="mt-6 mb-3 uppercase text-gray-400 font-bold text-xs">
                     Recomendados
                 </h2>
                 <div className="flex gap-4 overflow-auto [&::-webkit-scrollbar]:hidden">
-                    
-                {barbershops.map((barbershop) => (
-                    <BarbershopItem key={barbershop.id} barbershop={barbershop} />
-                ))}
+
+                    {barbershops.map((barbershop) => (
+                        <BarbershopItem key={barbershop.id} barbershop={barbershop} />
+                    ))}
+                </div>
+
+                {/* bloco de cards 2 */}
+                <h2 className="mt-6 mb-3 uppercase text-gray-400 font-bold text-xs">
+                    Recomendados
+                </h2>
+                <div className="flex gap-4 overflow-auto [&::-webkit-scrollbar]:hidden">
+
+                    {popularBarbershops.map((barbershop) => (
+                        <BarbershopItem key={barbershop.id} barbershop={barbershop} />
+                    ))}
                 </div>
 
             </div>
+
+            <footer>
+
+                {/* descrição final da pagina */}
+                <Card>
+                    <CardContent className="px-5 py-6">
+                        <p className="text-sm text-gray-400">© 2024 Copyright
+                            <span className="font-bold">FSW Barber</span>
+                        </p>
+                    </CardContent>
+                </Card>
+            </footer>
         </div>
     )
 };
