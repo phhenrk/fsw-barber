@@ -1,3 +1,4 @@
+import PhoneItem from "@/app/_components/phone-item";
 import ServiceItem from "@/app/_components/service-item";
 import { Button } from "@/app/_components/ui/button";
 import { db } from "@/app/_lib/prisma";
@@ -30,11 +31,12 @@ const barbershopPage = async ({ params }: barbershopPageProps) => {
         return notFound()
     }
 
+
     {/* CODIGOS DA PAGÍNA 2 DO PROJETO _COMPONENTS/BARBERSHOP/ID */ }
 
     return <div>
 
-        {/* imagem pagina 2 */}
+        {/* IMAGE / imagem pagina 2 */}
         <div className="relative w-full h-[250px]">
             <Image alt={barbershop.name} src={barbershop?.imageUrl}
                 fill className="object-cover" />
@@ -55,7 +57,7 @@ const barbershopPage = async ({ params }: barbershopPageProps) => {
                 <MenuIcon />
             </Button>
         </div>
-        {/* endereço e avaliacões */}
+        {/* TITULOS / endereço e avaliacões */}
         <div className="p-5 border-b border-solid">
             <h1 className="mb-3 text-xl font-bold">{barbershop.name}</h1>
 
@@ -77,13 +79,19 @@ const barbershopPage = async ({ params }: barbershopPageProps) => {
             <p className="text-justify text-sm">{barbershop?.description}</p>
         </div>
 
-        {/* cards da pagina 2 */}
-        <div className="p-5 space-y-3">
+        {/* cards da pagina 2 serviços */}
+        <div className="border-b border-solid p-5 space-y-3">
             <h2 className="text-xs font-bold uppercase text-gray-400">Serviços</h2>
             <div className="space-y-3">
                 {barbershop.services.map(service =>
                     <ServiceItem key={service.id} service={service} />)}
             </div>
+        </div>
+        {/* CONTATOS / PAGINA 2 FINAL */}
+        <div className="space-y-3 p-5">
+         {barbershop.phones.map(phone => (
+          <PhoneItem key={phone} phone={phone} />
+         ))}
         </div>
     </div>
 
