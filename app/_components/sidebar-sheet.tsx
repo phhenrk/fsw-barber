@@ -20,7 +20,7 @@ const SidebarSheet = () => {
     const handleLogoutClick = () => signOut()
 
     const handleButtonClick = () => {
-        toast.success('You did it!'); // função deslogado da conta !!!
+        toast.success('Você está desconectado do Google..'); // função deslogado da conta !!!
     };
 
     return (
@@ -67,7 +67,9 @@ const SidebarSheet = () => {
                                     </DialogDescription>
                                 </DialogHeader>
 
-                                <Button variant="outline" className="gap-1 font-bold">
+                                <Button variant="outline" 
+                                className="gap-1 font-bold" 
+                                >
                                     <Image
                                         alt="Fazer login com google"
                                         src="/google.svg"
@@ -123,7 +125,7 @@ const SidebarSheet = () => {
 
             {data?.user ? (
 
-                <div className="flex flex-col gap-2 py-5">
+                <div className="flex flex-col gap-2 py-5" onClick={handleButtonClick}>
                     <Button variant="ghost"
                         className="justify-start gap-2"
                         onClick={handleLogoutClick}
