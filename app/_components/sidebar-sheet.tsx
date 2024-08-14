@@ -7,7 +7,7 @@ import { SheetClose, SheetContent, SheetHeader, SheetTitle } from "./ui/sheet"
 import { quickSearchOptions } from "../_constants/seach"
 import Link from "next/link"
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog"
-import { signIn, signOut, useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 import { Avatar, AvatarImage } from "./ui/avatar"
 import { toast } from "sonner"
 import SignInDialog from "./sign-in-dialog"
@@ -110,9 +110,9 @@ const SidebarSheet = () => {
 
             {/* condição para sair da conta logado */}
 
-            {data?.user ? (
-
-                <div className="flex flex-col gap-2 py-5" onClick={handleButtonClick}>
+            {data?.user && (
+                
+                <div className="flex flex-col gap-2 py-5" >
                     <Button variant="ghost"
                         className="justify-start gap-2"
                         onClick={handleLogoutClick}
@@ -121,21 +121,9 @@ const SidebarSheet = () => {
                         Sair da conta
                     </Button>
                 </div>
-
-            ) : (
-
-                <>
-                    <div className="flex flex-col gap-2 py-5">
-                        <Button variant="ghost"
-                            className="justify-start gap-2"
-                            onClick={handleButtonClick}
-                        >
-                            <LogOutIcon size={18} />
-                            Sair da conta
-                        </Button>
-                    </div>
-                </>
             )}
+
+            
 
         </SheetContent>
 
