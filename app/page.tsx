@@ -8,6 +8,9 @@ import { quickSearchOptions } from "./_constants/seach";
 import BookingItem from "./_constants/booking-item";
 import Search from "./_components/search";
 import Link from "next/link";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./_lib/auth";
+
 
 
 
@@ -15,14 +18,40 @@ import Link from "next/link";
 const Home = async () => {
 
     //CHAMA MEU BANCO DE DADOS
+    const session = await getServerSession(authOptions)
     const barbershops = await db.barbershop.findMany({})
     const popularBarbershops = await db.barbershop.findMany({
         orderBy: {
             name: "desc",
-        }
+        },
     })
 
+    const confirmedBookings = session?.user ? 
+    await db.booking.findMany({
+        where: {
+            userId: (session.user as any).id,
+            date: {
+                gte: new Date(),
+            },
+        },
+
+        include: {
+            service: {
+                include: {
+                    barbershop: true,
+                },
+            },
+        },
+       orderBy: {
+        date: "desc",
+       },
+
+    })
+
+    : []
+
     return (
+
         <div>
 
             <Header />
@@ -35,26 +64,26 @@ const Home = async () => {
 
                 {/* BUSCA */}
                 <div className="mt-6">
-                   <Search />
+                    <Search />
                 </div>
                 {/* BUSCA RAPIDA */}
 
                 <div className="flex gap-3 mt-6 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
                     {quickSearchOptions.map((option) => (
-                    <Button className="gap-2" variant="secondary" 
-                    key={option.title}
-                    asChild
-                     >
-                       <Link href={`/barbershops?service=${option.title}`}>
-                       <Image src={option.imageUrl}
-                        width={16}
-                         height={16} 
-                        alt={option.title}
-                         />
-                          {option.title}
-                       </Link>
+                        <Button className="gap-2" variant="secondary"
+                            key={option.title}
+                            asChild
+                        >
+                            <Link href={`/barbershops?service=${option.title}`}>
+                                <Image src={option.imageUrl}
+                                    width={16}
+                                    height={16}
+                                    alt={option.title}
+                                />
+                                {option.title}
+                            </Link>
 
-                    </Button>
+                        </Button>
 
                     ))}
 
@@ -68,8 +97,17 @@ const Home = async () => {
                         className="rounded-xl object-cover" />
 
                 </div>
+                {/* AGENDAMENTO */}
+                <h2 className="mt-6 mb-3 uppercase text-gray-400 font-bold text-xs">
+                   Agendamentos
+                </h2>
 
-                <BookingItem/>
+                <div className="flex overflow-x-auto  gap-3  [&::-webkit-scrollbar]:hidden">
+                    {confirmedBookings.map((booking) => (
+                        <BookingItem key={booking.id} booking={booking} />
+                    ))}
+                </div>
+
 
                 {/* bloco de cards 1 */}
                 <h2 className="mt-6 mb-3 uppercase text-gray-400 font-bold text-xs">

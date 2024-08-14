@@ -9,7 +9,6 @@ import Link from "next/link"
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog"
 import { signOut, useSession } from "next-auth/react"
 import { Avatar, AvatarImage } from "./ui/avatar"
-import { toast } from "sonner"
 import SignInDialog from "./sign-in-dialog"
 
 
@@ -19,9 +18,7 @@ const SidebarSheet = () => {
     const { data } = useSession()
     const handleLogoutClick = () => signOut()
 
-    const handleButtonClick = () => {
-        toast.success('Você está desconectado do Google..'); // função deslogado da conta !!!
-    };
+    
 
     return (
 
@@ -80,9 +77,11 @@ const SidebarSheet = () => {
                     </Button>
                 </SheetClose>
 
-                <Button className="justify-start gap-2" variant="ghost">
-                    <CalendarIcon size={18} />
-                    Agendamento
+                <Button className="justify-start gap-2" variant="ghost" asChild>
+                <Link href="/bookings">
+                <CalendarIcon size={18} />
+                Agendamento
+                </Link>
                 </Button>
             </div>
 
