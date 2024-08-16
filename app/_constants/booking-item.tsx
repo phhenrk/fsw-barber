@@ -57,7 +57,7 @@ const [isSheetOpen, setIsSheetOpen] = useState(false)
 
     return (
         <Sheet open={isSheetOpen} onOpenChange={handleBookingSheetOpenChange}>
-            <SheetTrigger className="w-full">
+            <SheetTrigger className="w-full min-w-[90%]">
 
                 {/* AGENDAMENTO */}
 

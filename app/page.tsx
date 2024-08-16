@@ -28,29 +28,29 @@ const Home = async () => {
         },
     })
 
-    const confirmedBookings = session?.user ? 
-    await db.booking.findMany({
-        where: {
-            userId: (session.user as any).id,
-            date: {
-                gte: new Date(),
-            },
-        },
-
-        include: {
-            service: {
-                include: {
-                    barbershop: true,
+    const confirmedBookings = session?.user ?
+        await db.booking.findMany({
+            where: {
+                userId: (session.user as any).id,
+                date: {
+                    gte: new Date(),
                 },
             },
-        },
-       orderBy: {
-        date: "desc",
-       },
 
-    })
+            include: {
+                service: {
+                    include: {
+                        barbershop: true,
+                    },
+                },
+            },
+            orderBy: {
+                date: "desc",
+            },
 
-    : []
+        })
+
+        : []
 
     return (
 
@@ -63,12 +63,12 @@ const Home = async () => {
 
                 <h2 className="text-xl font-bold">Olá, {session?.user ? session.user.name : "bem vindo"}! </h2>
                 <p>
-                    <span className="capitalize">{format(new Date(), "EEEE, dd", {locale: ptBR})}
+                    <span className="capitalize">{format(new Date(), "EEEE, dd", { locale: ptBR })}
                     </span>
                     <span>&nbsp;de&nbsp;</span>
-                    <span className="capitalize">{format(new Date(), "MMMM", {locale: ptBR})}
+                    <span className="capitalize">{format(new Date(), "MMMM", { locale: ptBR })}
                     </span>
-                    </p>
+                </p>
 
                 {/* BUSCA */}
                 <div className="mt-6">
@@ -106,15 +106,20 @@ const Home = async () => {
 
                 </div>
                 {/* AGENDAMENTO */}
-                <h2 className="mt-6 mb-3 uppercase text-gray-400 font-bold text-xs">
-                   Agendamentos
-                </h2>
+                {confirmedBookings.length > 0 && (
+                    <>
 
-                <div className="flex overflow-x-auto  gap-3  [&::-webkit-scrollbar]:hidden">
-                    {confirmedBookings.map((booking) => (
-                        <BookingItem key={booking.id} booking={booking} />
-                    ))}
-                </div>
+                        <h2 className="mt-6 mb-3 uppercase text-gray-400 font-bold text-xs">
+                            Agendamentos
+                        </h2>
+
+                        <div className="flex overflow-x-auto  gap-3  [&::-webkit-scrollbar]:hidden">
+                            {confirmedBookings.map((booking) => (
+                                <BookingItem key={booking.id} booking={booking} />
+                            ))}
+                        </div>
+                    </>
+                )}
 
 
                 {/* bloco de cards 1 */}
